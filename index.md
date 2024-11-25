@@ -10,23 +10,33 @@ To add images, replace `tutheaderbl1.png` with the file name of any image you up
 
 ### Tutorial Aims
 
-#### <a href="#section1"> 1. The first section</a>
+#### <a href="#section1"> 1. Why are t-test and Chi-squared test important?</a>
+- Understand their statistical relevance.
+- Learn appropriate scenarios for their use.
 
-#### <a href="#section2"> 2. The second section</a>
+#### <a href="#section2"> 2. Preparing for the analysis</a>
+- Defining research questions and hypotheses.
+-  Cleaning and formatting data for analysis.
 
-#### <a href="#section3"> 3. The third section</a>
+#### <a href="#section3"> 3. Executing the tests</a>
+- Conducting a t-test for mean comparisons.
+- Running a Chi-squared test to assess variable associations.
+
+#### <a href="#section3"> 4. Presenting results visually</a>
+- Using histograms and boxplots for distributions.
+- Communicating Chi-squared results with bar plots.
+
+#### <a href="#section3"> 5. BONUS</a>
+- Annotating graphs with statistical significance.
+- Combining plots into panels using `patchwork`.
 
 ## You can read this text, then delete it and replace it with your text about your tutorial: what are the aims, what code do you need to achieve them?
 
-We are using `<a href="#section_number">text</a>` to create anchors within our text. For example, when you click on section one, the page will automatically go to where you have put `<a name="section_number"></a>`.
-
-To create subheadings, you can use `#`, e.g. `# Subheading 1` creates a subheading with a large font size. The more hashtags you add, the smaller the text becomes. If you want to make text bold, you can surround it with `__text__`, which creates **text**. For italics, use only one understore around the text, e.g. `_text_`, *text*.
+This tutorial introduces two fundamental statistical tests: the t-test and the Chi-squared test. You will learn their purposes, how to apply them, and how to interpret their results using R. These skills are crucial for analyzing data in various fields, including environmental and ecological sciences.
 
 # Subheading 1
 
-## Subheading 2
-
-### Subheading 3
+In science, many questions revolve around identifying differences or associations. For example, we might ask, "Are the differences in exam scores between male and female students significant?" or "Is there a link between smoking and lung cancer?" These types of questions can be addressed using statistical methods like t-tests and Chi-squared tests. Whether you're just starting with R or looking to enhance your knowledge of these tests, this tutorial will walk you through their application and interpretation step by step.
 
 This is some introductory text for your tutorial. Explain the skills that will be learned and why they are important. Set the tutorial in context.
 
