@@ -5,11 +5,9 @@ output:
   pdf_document: default
 ---
 
-<center><img src="{{ site.baseurl }}/tutheaderbl.png" alt="Img"/></center>
+<center><img src="picture/title intro T-test R.jpg" alt="Img"/></center>
 
-### Introduction of T-test in R
-
-#### <a href="#section1"> 1. What are t-test, and why is it important?</a>
+#### <a href="#section1"> 1. What are T-test, and why is it important?</a>
 
 -   Understand its statistical relevance.
 -   Learn appropriate scenarios for its use.
@@ -20,7 +18,7 @@ output:
 -   Explaining p-value and significance level.
 -   Introducing types of errors (Type I and Type II).
 
-#### <a href="#section3"> 3. t-Test</a>
+#### <a href="#section3"> 3. T-test</a>
 
 -   **3.1 One-sample t-test**: Test if a mean differs from a hypothetical value.
 -   **3.2 Independent t-test**: Compare means between two independent groups.
