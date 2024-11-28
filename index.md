@@ -10,62 +10,208 @@ To add images, replace `tutheaderbl1.png` with the file name of any image you up
 
 ### Tutorial Aims
 
-#### <a href="#section1"> 1. Why are t-test and Chi-squared test important?</a>
-- Understand their statistical relevance.
-- Learn appropriate scenarios for their use.
+#### <a href="#section1"> 1. What are t-test and Chi-squared test, and why are they important?</a>
 
-#### <a href="#section2"> 2. Preparing for the analysis</a>
-- Defining research questions and hypotheses.
--  Cleaning and formatting data for analysis.
+-   Understand their statistical relevance.
+-   Learn appropriate scenarios for their use.
 
-#### <a href="#section3"> 3. Executing the tests</a>
-- Conducting a t-test for mean comparisons.
-- Running a Chi-squared test to assess variable associations.
+#### <a href="#section2"> 2. Basics of Hypothesis Testing</a>
 
-#### <a href="#section3"> 4. Presenting results visually</a>
-- Using histograms and boxplots for distributions.
-- Communicating Chi-squared results with bar plots.
+-   Understanding null and alternative hypotheses.
+-   Explaining p-value and significance level.
+-   Introducing types of errors (Type I and Type II).
 
-#### <a href="#section3"> 5. BONUS</a>
-- Annotating graphs with statistical significance.
-- Combining plots into panels using `patchwork`.
+#### <a href="#section3"> 3. t-Test</a>
 
-## You can read this text, then delete it and replace it with your text about your tutorial: what are the aims, what code do you need to achieve them?
+-   **3.1 One-sample t-test**: Test if a mean differs from a hypothetical value.
+-   **3.2 Independent t-test**: Compare means between two independent groups.
+-   **3.3 Paired t-test**: Compare means of paired data (e.g., repeated measures).
+
+#### <a href="#section4"> 4. Chi-squared Test</a>
+
+-   Assess independence between categorical variables.
+-   Create contingency tables to summarize relationships.
+-   Perform the test to determine significance.
+
+#### <a href="#section5"> 5. Visualizing Results</a>
+
+-   Create boxplots for t-tests to visualize group comparisons.
+-   Use bar plots for chi-squared tests to display frequency distributions.
+
+#### <a href="#section6"> 6. Reporting Results</a>
+
+-   Guidelines for interpreting and writing up results.
+-   Use of APA-style examples for statistical reporting.
+
+#### <a href="#section7"> 7. Practice Exercises</a>
+
+-   One-sample t-test on `Petal.Length`.
+-   Independent t-test on `Petal.Width` between two species.
+-   Chi-squared test for independence using `Petal.Length` groups.
 
 This tutorial introduces two fundamental statistical tests: the t-test and the Chi-squared test. You will learn their purposes, how to apply them, and how to interpret their results using R. These skills are crucial for analyzing data in various fields, including environmental and ecological sciences.
 
-# Subheading 1
+You can get all of the resources for this tutorial from <a href="https://github.com/ourcodingclub/CC-EAB-tut-ideas" target="_blank">this GitHub repository</a>. Clone and download the repo as a zip file, then unzip it.
+
+
+## R set up
+
+It’s completely okay if you’ve never used R before—you can walk through everything step by step with us! Everyone starts as a beginner, and we’re here to guide you through the process and make it as smooth as possible. Together, we’ll cover the basics and get you comfortable with using R in no time. A great resource to guide you through this process is the Coding Club tutorial Getting Started with R and RStudio. While you’re at it, take a look at their Troubleshooting and How to Find Help tutorial—it’s a lifesaver—and the Coding Etiquette guide, which offers excellent tips for navigating the coding community.
+
+Now, let's get started.
+
+First, open `RStudio`, create a new *script* by clicking on `File/New File/R Script`. A Script in R is a file where you can write and save code to run, edit, and reuse later. Name your script appropriately, so that it clearly reflects its purpose and makes it easy to identify later. It is always a good idea the write a header to your script with your name, data and purpose as shown below.
+
+```r
+# Title: Intro of T-test and Chi-squared test in R
+# Script purpose: Use T-test and Chi-squared test to investigate questions on dataset iris
+# Author - contact details
+# Date
+```
+
+Next, set your working directory to the folder containing the unzipped files on your computer.
+
+```r
+# Set the working directory
+setwd("your_filepath")
+getwd()  # Run this to check where your working directory is
+```
+
+Then, load the required packages and dataset, installing them first if they are not already available.
+
+``` r
+# load packages
+library(ggplot2)
+library(reshape2)
+
+# Load the iris dataset
+data(iris)
+head(iris)  # View the first few rows
+summary(iris)  # Summary of the dataset
+```
+
+
+### <a name="section1">1. What are t-test and Chi-squared test, and why are they important? </a>
+
+#### Understand their statistical relevance
+
+T-tests and Chi-squared tests are two foundational tools in statistical inference. They help answer critical questions in science and social research. For instance:
+
+-   **t-test**: Are two sample means statistically different? Example: "Do students in online classes score higher than those in traditional classes?"
+-   **Chi-squared test**: Is there an association between two categorical variables? Example: "Is there a link between diet type and health outcomes?"
+
+These tests provide robust frameworks to evaluate hypotheses and are widely applied across various fields, including biology, psychology, and business analytics.
 
 In science, many questions revolve around identifying differences or associations. For example, we might ask, "Are the differences in exam scores between male and female students significant?" or "Is there a link between smoking and lung cancer?" These types of questions can be addressed using statistical methods like t-tests and Chi-squared tests. Whether you're just starting with R or looking to enhance your knowledge of these tests, this tutorial will walk you through their application and interpretation step by step.
 
-This is some introductory text for your tutorial. Explain the skills that will be learned and why they are important. Set the tutorial in context.
+We define t-test and Chi-squared test as follows: 
 
-You can get all of the resources for this tutorial from <a href="https://github.com/ourcodingclub/CC-EAB-tut-ideas" target="_blank">this GitHub repository</a>. Clone and download the repo as a zip file, then unzip it.
+-   **t-test**: The t-test is a  statistical analysis that assists in deciding whether there is a significant difference between the means of two groups. This analysis assumes that the data collected follows a normal distribution. It is often used when the data sets are related to each other.
 
-<a name="section1"></a>
+-   **Chi-squared test**: The chi-square test is a statistical analysis used to check if a significant relationship exists between two categorical variables in a sample. It does this by comparing the observed frequencies in each category of a cross-tabulation to the frequencies we expect by chance.
 
-## 1. The first section
+Here are the differences of t-test and Chi-squared test: 
 
-At the beginning of your tutorial you can ask people to open `RStudio`, create a new script by clicking on `File/ New File/ R Script` set the working directory and load some packages, for example `ggplot2` and `dplyr`. You can surround package names, functions, actions ("File/ New...") and small chunks of code with backticks, which defines them as inline code blocks and makes them stand out among the text, e.g. `ggplot2`.
+- The t-test determines if the means of two groups are significantly different.
 
-When you have a larger chunk of code, you can paste the whole code in the `Markdown` document and add three backticks on the line before the code chunks starts and on the line after the code chunks ends. After the three backticks that go before your code chunk starts, you can specify in which language the code is written, in our case `R`.
+- The chi-square test checks if a relationship exists between two categorical variables.
 
-To find the backticks on your keyboard, look towards the top left corner on a Windows computer, perhaps just above `Tab` and before the number one key. On a Mac, look around the left `Shift` key. You can also just copy the backticks from below.
+- T-test requires data to meet assumptions: normal distribution, homogeneity of variance, and interval or ratio level of measurement.
 
-``` r
-# Set the working directory
-setwd("your_filepath")
+- The chi-square test assumes that variables are categorical, the data is a random sample, and the expected frequency for each cell is 5 or more.
 
-# Load packages
-library(ggplot2)
-library(dplyr)
+
+#### Learn appropriate scenarios for their use
+
+For **t-tests** and **chi-squared tests**, appropriate scenarios depend on the type of data and the research question being addressed:
+
+##### **t-Tests**
+t-tests are appropriate in the following scenarios:
+
+1. **Numerical Data**: When the data is continuous (e.g., height, weight, or length measurements).
+
+2. **Comparing Means**: When the goal is to compare the means of one or more groups.
+   - **One-sample t-test**: Used to check if the sample mean differs from a known or hypothetical value.
+   - **Independent t-test**: Used to compare the means of two independent groups (e.g., two species).
+   - **Paired t-test**: Used to compare measurements from the same group under different conditions or at different times (e.g., before-and-after studies).
+
+#### **Chi-squared Tests**
+Chi-squared tests are appropriate in the following scenarios:
+
+1. **Categorical Data**: When the data consists of categories or frequencies (e.g., species types, groups).
+
+2. **Testing Independence**: Used to assess if two categorical variables are related (e.g., species and sepal length groups).
+
+3. **Goodness-of-Fit**: Used to test if observed categorical data matches expected proportions.
+
+By understanding these scenarios, it becomes easier to select the appropriate test for the analysis, ensuring valid and interpretable results.
+
+
+
+
+
+
+### <a name="section2">2. Basics of Hypothesis Testing</a>
+
+#### Hypothesis Testing
+
+Hypothesis testing is a basic idea in statistics that helps us decide if we have enough evidence to support a claim about a group or population. It has a few important parts:
+
+##### Null and Alternative Hypotheses
+- **Null Hypothesis (\(H_0\))**: This is like the default assumption, saying nothing special is happening. For example, "There’s no difference between two groups."
+- **Alternative Hypothesis (\(H_a\))**: This is the claim we’re testing, suggesting something *is* happening, like "The two groups are different."
+
+##### p-value and Significance Level
+- The **p-value** tells us how likely it is to see our results (or something even more surprising) if the null hypothesis is true.
+- The **significance level (\(\alpha\))** is a cutoff point we choose (often 0.05). If the p-value is smaller than \(\alpha\), it means the results are unlikely under the null hypothesis, so we reject it.
+
+##### Type I and Type II Errors
+- **Type I Error**: This happens when we think something is happening (reject \(H_0\)) but actually, nothing is (false alarm).
+- **Type II Error**: This happens when we don’t notice something is happening (fail to reject \(H_0\)) even though it is (missed signal).
+
+Hypothesis testing is useful because it helps us figure out whether the patterns we see in data are real or just random chance.
+
+This might seems a lot to understand. Don't worry, we will go through this together step by step in latter sections. 
+
+
+
+
+Before we dive in, we need to first understand what dataset we are using. 
+
+### **What is the `iris` Dataset?**
+The `iris` dataset is a collection of flower measurements from three types of iris flowers: `setosa`, `versicolor`, and `virginica`. There are 150 rows in total (50 flowers of each species). The dataset has these columns:
+
+- **Sepal.Length**: How long the sepal is (in cm).  
+- **Sepal.Width**: How wide the sepal is (in cm).  
+- **Petal.Length**: How long the petal is (in cm).  
+- **Petal.Width**: How wide the petal is (in cm).  
+- **Species**: Which species the flower belongs to (`setosa`, `versicolor`, or `virginica`).
+
+
+
+
+
+### <a name="section3">3. T-test</a>
+
+Now, let's apply what we have learned into application! 
+
+
+#### **3.1 One-sample t-test**
+This tests if the mean of a single group is different from a specific value.
+
+Let’s check if the average sepal length of all flowers in the `iris` dataset is significantly different from 5.8 (a hypothetical value).
+
+```r
+# Test if the mean Sepal.Length is significantly different from 5.8
+t.test(iris$Sepal.Length, mu = 5.8)
 ```
 
-<a name="section2"></a>
 
-## 2. The second section
 
-You can add more text and code, e.g.
+
+
+
+
 
 ``` r
 # Create fake data
@@ -95,7 +241,7 @@ At this point it would be a good idea to include an image of what the plot is me
 
 <a name="section1"></a>
 
-## 3. The third section
+
 
 More text, code and images.
 
