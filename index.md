@@ -26,23 +26,20 @@ output:
 -   **3.2 Independent t-test**: Compare means between two independent groups.
 -   **3.3 Paired t-test**: Compare means of paired data (e.g., repeated measures).
 
-#### <a href="#section5"> 5. Visualizing Results</a>
+#### <a href="#section4"> 4. Visualizing Results</a>
 
--   Create boxplots for t-tests to visualize group comparisons.
--   Use bar plots for chi-squared tests to display frequency distributions.
+-   One-Sample t-Test: Histogram with Hypothesized Mean
 
-#### <a href="#section6"> 6. Reporting Results</a>
+-   Two-sample t-Test: Boxplot
 
--   Guidelines for interpreting and writing up results.
--   Use of APA-style examples for statistical reporting.
+-   Two-sample T-test: Density plot
 
-#### <a href="#section7"> 7. Practice Exercises</a>
+#### <a href="#section5"> 5. Summary and future study direction</a>
 
--   One-sample t-test on `Petal.Length`.
--   Independent t-test on `Petal.Width` between two species.
--   Chi-squared test for independence using `Petal.Length` groups.
+- What's next?
 
-This tutorial introduces two fundamental statistical tests: the t-test and the Chi-squared test. You will learn their purposes, how to apply them, and how to interpret their results using R. These skills are crucial for analyzing data in various fields, including environmental and ecological sciences.
+
+This tutorial introduces the fundamental statistical tests: the T-test. You will learn its purposes, how to apply them, and how to interpret their results using R. These skills are crucial for analyzing data in various fields, including environmental and ecological sciences.
 
 You can get all of the resources for this tutorial from <a href="https://github.com/ourcodingclub/CC-EAB-tut-ideas" target="_blank">this GitHub repository</a>. Clone and download the repo as a zip file, then unzip it.
 
@@ -264,7 +261,7 @@ The average sepal length in the `iris` dataset is not significantly different fr
 Does that build you some confidence? Now, let's look at the next test. 
 
 
-#### **3.2 Independent t-test**
+#### **3.2 Two-sample t-test**
 
 This test compares the averages of two separate groups to see if they’re different.
 
@@ -331,34 +328,138 @@ Therefore, we can conclude from our result that, the mean of `Sepal.Length` is n
 
 
 
-### <a name="section4">4. Chi-squared Test</a>
+### <a name="section4">4. Visualizing Results</a>
+
+To complement the t-test analysis, we’ll use visualisations to better understand the data and the relationships between groups. While the t-test provides numerical evidence for differences between means, visualising the data helps us grasp the distribution, variability, and potential outliers. In this section, we’ll use different plots to illustrate the results of both one-sample and independent t-tests in an accessible and intuitive way.
+
+#### One-Sample t-Test: Histogram with Hypothesized Mean
+
+**Why this plot?**
+
+This plot helps us compare the distribution of `Sepal.Length` with the hypothesized mean ($mu = 5.8$) in a one-sample t-test. It also lets us visually assess whether the data looks approximately normal, which is an important assumption for the t-test.
+
+**How should we create it?**
+
+We use a histogram to show the distribution of `Sepal.Length` and overlay a density curve to highlight the shape of the data. A dashed red line marks the hypothesized mean so we can see how it compares to the data.
+```r
+ggplot(iris, aes(x = Sepal.Length)) +
+  geom_histogram(aes(y = ..density..), bins = 30, fill = "skyblue", alpha = 0.7, color = "black") +
+  geom_density(color = "blue", size = 1) +
+  geom_vline(xintercept = 5.8, linetype = "dashed", color = "red", size = 1) +
+  labs(title = "Sepal Length Distribution with Hypothesized Mean",
+       x = "Sepal Length",
+       y = "Density") +
+  theme_minimal()
+```
+The output is shown as: 
+
+<center><img src="picture/sepal_length_distribution.png" alt="Img" width="600"/></center>
+
+**What can we see?**
+
+The distribution of `Sepal.Length` appears roughly normal, with no major skewness or irregularities. This suggests that the data does not violate the assumption of normality, which supports the use of the t-test. The dashed line at ($mu = 5.8$) lies close to the center of the distribution, hinting that the mean of `Sepal.Length` might not be significantly different from the hypothesized mean. However, the t-test confirms this numerically.
 
 
-### <a name="section5">5. Visualizing Results</a>
+#### Two-sample t-Test: Boxplot
+
+**Why this plot?**
+
+We’re comparing `Sepal.Length` between two species: `setosa` and `versicolor`. A boxplot is great for this because it shows the range, median, and variability of each group. It’s a clear way to check if the groups are different.
+
+**How should we make it?**
+
+We will filter the data for `setosa` and `versicolor`. Then, we can create a boxplot and added dots for group means (those black points).
+
+```r
+ggplot(iris %>% filter(Species %in% c("setosa", "versicolor")), 
+       aes(x = Species, y = Sepal.Length, fill = Species)) +
+  geom_boxplot(alpha = 0.7) +
+  stat_summary(fun = mean, geom = "point", shape = 23, size = 3, color = "black", fill = "white") +
+  theme_minimal() +
+  labs(title = "Comparison of Sepal Length between Setosa and Versicolor",
+       x = "Species",
+       y = "Sepal Length")
+```
+
+**What can we see?**
+
+If the boxes for `setosa` and `versicolor` overlap a lot, their means might not be very different. If they are clearly separated, it suggests the groups have different averages. The graph clearly shows the latter, with a significant difference between mean of `setosa` and `versicolor`. This aligns with our outcome for two sample test. 
+
+<center><img src="picture/q52.png" alt="Img" width="600"/></center>
+
+
+
+#### Two-sample T-test: Density plot
+
+**Why this plot?**
+
+The density plot shows the distribution shape of `Sepal.Length` for `setosa` and `versicolor`. It’s helpful to see if the groups are really different or if their ranges overlap a lot.
+
+**How should we make it?**
+
+We will first filter the data for the two species. We will then plot the density of `Sepal.Length` for each group and added dashed lines to mark the group means.
+
+```r
+ggplot(iris %>% filter(Species %in% c("setosa", "versicolor")), 
+       aes(x = Sepal.Length, fill = Species)) +
+  geom_density(alpha = 0.5) +
+  geom_vline(data = iris %>% filter(Species %in% c("setosa", "versicolor")) %>%
+               group_by(Species) %>%
+               summarise(mean = mean(Sepal.Length)),
+             aes(xintercept = mean, color = Species),
+             linetype = "dashed", size = 1) +
+  theme_minimal() +
+  labs(title = "Density Plot of Sepal Length by Species",
+       x = "Sepal Length",
+       y = "Density")
+```
+
+**What can we see?**
+
+This density plot compares the `Sepal.Length` distributions for `setosa` (red) and `versicolor` (blue). The dashed lines represent the means of each group, showing that `versicolor` has a higher mean compared to `setosa`. The distinct peaks and minimal overlap between the curves suggest a noticeable difference in `Sepal.Length` between the two species, with `setosa` having more concentrated values around 5, while `versicolor` shows a broader distribution around 6. This visualization supports the use of a t-test to assess the statistical significance of the observed mean difference.
+
+If you are interested in exploring more data visualisation methods, or creating a more beautiful graph, you could find helpful tutorials here <a href="https://ourcodingclub.github.io/tutorials/datavis/" target="_blank">Useful links</a>.
 
 
 
 
-#### Check out our <a href="https://ourcodingclub.github.io/links/" target="_blank">Useful links</a> page where you can find loads of guides and cheatsheets.
+### <a name="section5">5. Summary and future study direction</a>
 
-#### If you have any questions about completing this tutorial, please contact us on [ourcodingclub\@gmail.com](mailto:ourcodingclub@gmail.com){.email}
+Throughout this tutorial, we explored the fundamentals of the **t-test**, its types, and their respective applications in hypothesis testing. By applying the t-test in R, we not only validated statistical differences but also enhanced our interpretation with visualizations. The examples from the `iris` dataset demonstrate how to seamlessly integrate statistical tests into real-world data analysis workflows.
 
-#### <a href="INSERT_SURVEY_LINK" target="_blank">We would love to hear your feedback on the tutorial, whether you did it in the classroom or online!</a>
+#### What’s Next?
+
+To further solidify your understanding:
+- Experiment with other datasets to practice t-tests.
+- Explore more complex statistical methods like **ANOVA** for comparing multiple groups or post-hoc tests for pairwise comparisons.
+- Dive deeper into R's data visualization capabilities to create compelling and informative plots.
+
+Remember, t-tests are a cornerstone of statistical analysis, and mastering them lays the foundation for more advanced techniques. If you have any questions or feedback about this tutorial, don’t hesitate to reach out to us.
+
+Happy coding and analyzing!
+
+
+---
+
+Check out our <a href="https://ourcodingclub.github.io/links/" target="_blank">Useful links</a> page where you can find loads of guides and cheatsheets.
+
+If you have any questions about completing this tutorial, please contact us on [ourcodingclub\@gmail.com](mailto:ourcodingclub@gmail.com){.email}
+
+<a href="INSERT_SURVEY_LINK" target="_blank">We would love to hear your feedback on the tutorial, whether you did it in the classroom or online!</a>
 
 <ul class="social-icons">
 
 <li>
 
-<h3><a href="https://twitter.com/our_codingclub" target="_blank"> Follow our coding adventures on Twitter! <i class="fa fa-twitter"></i></a></h3>
+<h3><a href="https://twitter.com/our_codingclub" target="_blank">Follow our coding adventures on Twitter! <i class="fa fa-twitter"></i></a></h3>
 
 </li>
 
 </ul>
 
-###   Subscribe to our mailing list:
+#####   Subscribe to our mailing list:
 
-::: container
-```         
+     
 <div class="block">
     <!-- subscribe form start -->
     <div class="form-group">
@@ -372,5 +473,4 @@ Therefore, we can conclude from our result that, the mean of `Sepal.Length` is n
                 </form>
     </div>
 </div>
-```
-:::
+

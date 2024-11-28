@@ -1,5 +1,6 @@
 library(ggplot2)
 library(reshape2)
+library(dplyr)
 
 
 # 1. Load the iris dataset
@@ -23,52 +24,47 @@ versicolor <- subset(iris, Species == "versicolor")
 t.test(setosa$Sepal.Length, versicolor$Sepal.Length)
 
 
+# 4. Visualizing Results
+# barplot
+q51 <- ggplot(iris, aes(x = Sepal.Length)) +
+    geom_histogram(aes(y = ..density..), bins = 30, fill = "skyblue", alpha = 0.7, color = "black") +
+    geom_density(color = "blue", size = 1) +
+    geom_vline(xintercept = 5.8, linetype = "dashed", color = "red", size = 1) +
+    labs(title = "Sepal Length Distribution with Hypothesized Mean",
+         x = "Sepal Length",
+         y = "Density") +
+    theme_minimal()
 
-# 4. Chi-squared Test
-# Test for Independence
-# Discretize Sepal.Length into categories
-iris$Sepal.Length.Group <- cut(iris$Sepal.Length, breaks = 3, labels = c("Short", "Medium", "Long"))
-# Create a contingency table
-contingency_table <- table(iris$Species, iris$Sepal.Length.Group)
-print(contingency_table)
-# Perform chi-squared test
-chisq.test(contingency_table)
+ggsave("picture/sepal_length_distribution.png", plot = q51, width = 8, height = 6, dpi = 300)
 
-# 5. Visualizing Results
-# 5.1 Boxplot for t-tests
-# Visualize Sepal.Length by Species
-ggplot(iris_subset, aes(x = Species, y = Sepal.Length, fill = Species)) +
-  geom_boxplot() +
-  labs(title = "Sepal Length by Species", x = "Species", y = "Sepal Length") +
-  theme_minimal()
+#Q42
+q52 <- ggplot(iris %>% filter(Species %in% c("setosa", "versicolor")), 
+       aes(x = Species, y = Sepal.Length, fill = Species)) +
+    geom_boxplot(alpha = 0.7) +
+    stat_summary(fun = mean, geom = "point", shape = 23, size = 3, color = "black", fill = "white") +
+    theme_minimal() +
+    labs(title = "Comparison of Sepal Length between Setosa and Versicolor",
+         x = "Species",
+         y = "Sepal Length")
 
-# 5.2 Bar Plot for Chi-squared Test
-# Melt contingency table for plotting
-contingency_melted <- melt(as.table(contingency_table))
-ggplot(contingency_melted, aes(x = Var2, y = value, fill = Var1)) +
-  geom_bar(stat = "identity", position = "dodge") +
-  labs(title = "Sepal Length Group by Species", x = "Sepal Length Group", y = "Frequency") +
-  theme_minimal()
+ggsave("picture/q52.png", plot = q52, width = 8, height = 6, dpi = 300)
 
-# 6. Reporting Results (no specific code)
 
-# 7. Practice Exercises
-# 7.1 One-sample t-test
-# Test if the mean Petal.Length is significantly different from 3
-t.test(iris$Petal.Length, mu = 3)
+# Q43
+q53 <- ggplot(iris %>% filter(Species %in% c("setosa", "versicolor")), 
+              aes(x = Sepal.Length, fill = Species)) +
+    geom_density(alpha = 0.5) +
+    geom_vline(data = iris %>% filter(Species %in% c("setosa", "versicolor")) %>%
+                 group_by(Species) %>%
+                 summarise(mean = mean(Sepal.Length)),
+               aes(xintercept = mean, color = Species),
+               linetype = "dashed", size = 1) +
+    theme_minimal() +
+    labs(title = "Density Plot of Sepal Length by Species",
+         x = "Sepal Length",
+         y = "Density")
 
-# 7.2 Independent t-test
-# Compare Petal.Width between "virginica" and "versicolor"
-iris_subset <- subset(iris, Species %in% c("virginica", "versicolor"))
-t.test(Petal.Width ~ Species, data = iris_subset)
+ggsave("picture/q53.png", plot = q52, width = 8, height = 6, dpi = 300)
 
-# 7.3 Chi-squared Test
-# Discretize Petal.Length into categories
-iris$Petal.Length.Group <- cut(iris$Petal.Length, breaks = 3, labels = c("Short", "Medium", "Long"))
-# Create a contingency table
-contingency_table2 <- table(iris$Species, iris$Petal.Length.Group)
-print(contingency_table2)
-# Perform chi-squared test
-chisq.test(contingency_table2)
 
-# 8. Export to HTML (handled in R Markdown, no specific R code here)
+
