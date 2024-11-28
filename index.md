@@ -1,4 +1,5 @@
 ---
+title: "Introduction to T-test and Chi-squared Test"
 output:
   html_document: default
   pdf_document: default
@@ -6,9 +7,7 @@ output:
 
 <center><img src="{{ site.baseurl }}/tutheaderbl.png" alt="Img"/></center>
 
-To add images, replace `tutheaderbl1.png` with the file name of any image you upload to your GitHub repository.
-
-### Tutorial Aims
+### Introduction of T-test and CHi-squared test in R
 
 #### <a href="#section1"> 1. What are t-test and Chi-squared test, and why are they important?</a>
 
@@ -197,7 +196,15 @@ Now, let's apply what we have learned into application!
 
 
 #### **3.1 One-sample t-test**
-This tests if the mean of a single group is different from a specific value.
+This tests if the mean of a single group is different from a specific value. 
+
+**Hypotheses:**
+
+- **Null Hypothesis (\(H_0\))**: The mean sepal length is equal to 5.8.
+
+- **Alternative Hypothesis (\(H_a\))**: The mean sepal length is not equal to 5.8.
+
+In our example, we could write our hypothesis as: 
 
 Let’s check if the average sepal length of all flowers in the `iris` dataset is significantly different from 5.8 (a hypothetical value).
 
@@ -206,10 +213,75 @@ Let’s check if the average sepal length of all flowers in the `iris` dataset i
 t.test(iris$Sepal.Length, mu = 5.8)
 ```
 
+The output shows that: 
+
+- **p-value**: \( p = 0.5226 \)  
+
+  This is much greater than 0.05, so we *fail to reject* the null hypothesis.
+
+Then, we get the **conclusion**: 
+
+The average sepal length in the `iris` dataset is not significantly different from 5.8. Any small difference is likely due to random chance.
+
+Does that build you some confidence? Now, let's look at the next test. 
 
 
+#### **3.2 Independent t-test**
 
+This test compares the averages of two separate groups to see if they’re different.
 
+In our example, we could write our hypothesis as: 
+
+**Hypotheses:**
+
+- **Null Hypothesis (\(H_0\))**: The mean sepal lengths of `setosa` and `versicolor` are equal.
+
+- **Alternative Hypothesis (\(H_a\))**: The mean sepal lengths of `setosa` and `versicolor` are not equal.
+
+```r
+# Filter the data for two species
+setosa <- subset(iris, Species == "setosa")
+versicolor <- subset(iris, Species == "versicolor")
+
+# Perform an independent t-test
+t.test(setosa$Sepal.Length, versicolor$Sepal.Length)
+```
+The output shows that: 
+
+- **p-value**: \( p < 2.2e-16 \)  
+
+  This is much smaller than 0.05, so we *reject* the null hypothesis. 
+
+Then, we can conclude from our result that, the mean sepal length of `setosa` and `versicolor` are not equal. 
+
+Now, let's learn one more method. 
+
+#### **3.3 Paired t-test**
+
+This test is used to compare two related sets of measurements, like "before and after" scenarios.
+
+In our example, we could write our hypothesis as: 
+
+**Hypotheses:**
+
+- **Null Hypothesis (\(H_0\))**: The mean of `Sepal.Length` is equal to the mean of `Petal.Length` for `setosa`.  
+  (Or, we could also say that there is no significant difference between the two measurements.)
+  
+- **Alternative Hypothesis (\(H_a\))**: The mean of `Sepal.Length` is not equal to the mean of `Petal.Length` for `setosa`.  
+  (Or, we could also say that there is a significant difference between the two measurements.)
+
+```r
+# Compare Sepal.Length and Petal.Length within the same species ("setosa")
+setosa_data <- subset(iris, Species == "setosa")
+t.test(setosa_data$Sepal.Length, setosa_data$Petal.Length, paired = TRUE)
+```
+The output shows that: 
+
+- **p-value**: \( p < 2.2e-16 \)  
+
+  This is much smaller than 0.05, so we *reject* the null hypothesis. 
+  
+Therefore, we can conclude from our result that, the mean of `Sepal.Length` is not equal to the mean of `Petal.Length` for `setosa`. 
 
 
 
@@ -238,8 +310,6 @@ ggplot(data = xy_fil, aes(x = x_dat, y = y_dat)) +  # Select the data to use
 At this point it would be a good idea to include an image of what the plot is meant to look like so students can check they've done it right. Replace `IMAGE_NAME.png` with your own image file:
 
 <center><img src="{{ site.baseurl }}/IMAGE_NAME.png" alt="Img" style="width: 800px;"/></center>
-
-<a name="section1"></a>
 
 
 

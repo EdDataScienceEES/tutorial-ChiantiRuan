@@ -11,7 +11,7 @@
 
 
 
-<title>index</title>
+<title>Introduction to T-test and Chi-squared Test</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -348,6 +348,8 @@ display: none;
 
 
 
+<h1 class="title toc-ignore">Introduction to T-test and Chi-squared
+Test</h1>
 
 </div>
 
@@ -355,10 +357,8 @@ display: none;
 <center>
 <img role="img" aria-label="Img" src="{{ site.baseurl }}/tutheaderbl.png" alt="Img" />
 </center>
-<p>To add images, replace <code>tutheaderbl1.png</code> with the file
-name of any image you upload to your GitHub repository.</p>
-<div id="tutorial-aims" class="section level3">
-<h3>Tutorial Aims</h3>
+<div id="introduction-of-t-test-and-chi-squared-test-in-r" class="section level3">
+<h3>Introduction of T-test and CHi-squared test in R</h3>
 <div id="what-are-t-test-and-chi-squared-test-and-why-are-they-important" class="section level4">
 <h4><a href="#section1"> 1. What are t-test and Chi-squared test, and
 why are they important?</a></h4>
@@ -639,11 +639,93 @@ columns:</p>
 <h4><strong>3.1 One-sample t-test</strong></h4>
 <p>This tests if the mean of a single group is different from a specific
 value.</p>
+<p><strong>Hypotheses:</strong></p>
+<ul>
+<li><p><strong>Null Hypothesis (<span class="math inline">\(H_0\)</span>)</strong>: The mean sepal length is
+equal to 5.8.</p></li>
+<li><p><strong>Alternative Hypothesis (<span class="math inline">\(H_a\)</span>)</strong>: The mean sepal length is
+not equal to 5.8.</p></li>
+</ul>
+<p>In our example, we could write our hypothesis as:</p>
 <p>Let’s check if the average sepal length of all flowers in the
 <code>iris</code> dataset is significantly different from 5.8 (a
 hypothetical value).</p>
 <pre class="r"><code># Test if the mean Sepal.Length is significantly different from 5.8
 t.test(iris$Sepal.Length, mu = 5.8)</code></pre>
+<p>The output shows that:</p>
+<ul>
+<li><p><strong>p-value</strong>: <span class="math inline">\(p =
+0.5226\)</span></p>
+<p>This is much greater than 0.05, so we <em>fail to reject</em> the
+null hypothesis.</p></li>
+</ul>
+<p>Then, we get the <strong>conclusion</strong>:</p>
+<p>The average sepal length in the <code>iris</code> dataset is not
+significantly different from 5.8. Any small difference is likely due to
+random chance.</p>
+<p>Does that build you some confidence? Now, let’s look at the next
+test.</p>
+</div>
+<div id="independent-t-test" class="section level4">
+<h4><strong>3.2 Independent t-test</strong></h4>
+<p>This test compares the averages of two separate groups to see if
+they’re different.</p>
+<p>In our example, we could write our hypothesis as:</p>
+<p><strong>Hypotheses:</strong></p>
+<ul>
+<li><p><strong>Null Hypothesis (<span class="math inline">\(H_0\)</span>)</strong>: The mean sepal lengths of
+<code>setosa</code> and <code>versicolor</code> are equal.</p></li>
+<li><p><strong>Alternative Hypothesis (<span class="math inline">\(H_a\)</span>)</strong>: The mean sepal lengths of
+<code>setosa</code> and <code>versicolor</code> are not equal.</p></li>
+</ul>
+<pre class="r"><code># Filter the data for two species
+setosa &lt;- subset(iris, Species == &quot;setosa&quot;)
+versicolor &lt;- subset(iris, Species == &quot;versicolor&quot;)
+
+# Perform an independent t-test
+t.test(setosa$Sepal.Length, versicolor$Sepal.Length)</code></pre>
+<p>The output shows that:</p>
+<ul>
+<li><p><strong>p-value</strong>: <span class="math inline">\(p &lt;
+2.2e-16\)</span></p>
+<p>This is much smaller than 0.05, so we <em>reject</em> the null
+hypothesis.</p></li>
+</ul>
+<p>Then, we can conclude from our result that, the mean sepal length of
+<code>setosa</code> and <code>versicolor</code> are not equal.</p>
+<p>Now, let’s learn one more method.</p>
+</div>
+<div id="paired-t-test" class="section level4">
+<h4><strong>3.3 Paired t-test</strong></h4>
+<p>This test is used to compare two related sets of measurements, like
+“before and after” scenarios.</p>
+<p>In our example, we could write our hypothesis as:</p>
+<p><strong>Hypotheses:</strong></p>
+<ul>
+<li><p><strong>Null Hypothesis (<span class="math inline">\(H_0\)</span>)</strong>: The mean of
+<code>Sepal.Length</code> is equal to the mean of
+<code>Petal.Length</code> for <code>setosa</code>.<br />
+(Or, we could also say that there is no significant difference between
+the two measurements.)</p></li>
+<li><p><strong>Alternative Hypothesis (<span class="math inline">\(H_a\)</span>)</strong>: The mean of
+<code>Sepal.Length</code> is not equal to the mean of
+<code>Petal.Length</code> for <code>setosa</code>.<br />
+(Or, we could also say that there is a significant difference between
+the two measurements.)</p></li>
+</ul>
+<pre class="r"><code># Compare Sepal.Length and Petal.Length within the same species (&quot;setosa&quot;)
+setosa_data &lt;- subset(iris, Species == &quot;setosa&quot;)
+t.test(setosa_data$Sepal.Length, setosa_data$Petal.Length, paired = TRUE)</code></pre>
+<p>The output shows that:</p>
+<ul>
+<li><p><strong>p-value</strong>: <span class="math inline">\(p &lt;
+2.2e-16\)</span></p>
+<p>This is much smaller than 0.05, so we <em>reject</em> the null
+hypothesis.</p></li>
+</ul>
+<p>Therefore, we can conclude from our result that, the mean of
+<code>Sepal.Length</code> is not equal to the mean of
+<code>Petal.Length</code> for <code>setosa</code>.</p>
 <pre class="r"><code># Create fake data
 x_dat &lt;- rnorm(n = 100, mean = 5, sd = 2)  # x data
 y_dat &lt;- rnorm(n = 100, mean = 10, sd = 0.2)  # y data
@@ -661,7 +743,6 @@ Replace <code>IMAGE_NAME.png</code> with your own image file:</p>
 <center>
 <img role="img" aria-label="Img" src="{{ site.baseurl }}/IMAGE_NAME.png" alt="Img" style="width: 800px;" />
 </center>
-<p><a name="section1"></a></p>
 <p>More text, code and images.</p>
 <p>This is the end of the tutorial. Summarise what the student has
 learned, possibly even with a list of learning outcomes. In this
