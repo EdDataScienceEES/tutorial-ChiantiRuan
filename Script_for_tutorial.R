@@ -15,14 +15,14 @@ summary(iris)  # Summary of the dataset
 t.test(iris$Sepal.Length, mu = 5.8)
 
 # 3.2 Independent t-test
-# Compare Sepal.Length between "setosa" and "versicolor"
-iris_subset <- subset(iris, Species %in% c("setosa", "versicolor"))
-t.test(Sepal.Length ~ Species, data = iris_subset)
+# Filter the data for two species
+setosa <- subset(iris, Species == "setosa")
+versicolor <- subset(iris, Species == "versicolor")
 
-# 3.3 Paired t-test
-# Compare Sepal.Length and Petal.Length within the same species ("setosa")
-setosa_data <- subset(iris, Species == "setosa")
-t.test(setosa_data$Sepal.Length, setosa_data$Petal.Length, paired = TRUE)
+# Perform an independent t-test
+t.test(setosa$Sepal.Length, versicolor$Sepal.Length)
+
+
 
 # 4. Chi-squared Test
 # Test for Independence

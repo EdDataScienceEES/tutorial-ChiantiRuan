@@ -1,5 +1,5 @@
 ---
-title: "Introduction to T-test and Chi-squared Test"
+title: "Introduction to T-test in R"
 output:
   html_document: default
   pdf_document: default
@@ -7,12 +7,12 @@ output:
 
 <center><img src="{{ site.baseurl }}/tutheaderbl.png" alt="Img"/></center>
 
-### Introduction of T-test and Chi-squared test in R
+### Introduction of T-test in R
 
-#### <a href="#section1"> 1. What are t-test and Chi-squared test, and why are they important?</a>
+#### <a href="#section1"> 1. What are t-test, and why is it important?</a>
 
--   Understand their statistical relevance.
--   Learn appropriate scenarios for their use.
+-   Understand its statistical relevance.
+-   Learn appropriate scenarios for its use.
 
 #### <a href="#section2"> 2. Basics of Hypothesis Testing</a>
 
@@ -25,12 +25,6 @@ output:
 -   **3.1 One-sample t-test**: Test if a mean differs from a hypothetical value.
 -   **3.2 Independent t-test**: Compare means between two independent groups.
 -   **3.3 Paired t-test**: Compare means of paired data (e.g., repeated measures).
-
-#### <a href="#section4"> 4. Chi-squared Test</a>
-
--   Assess independence between categorical variables.
--   Create contingency tables to summarize relationships.
--   Perform the test to determine significance.
 
 #### <a href="#section5"> 5. Visualizing Results</a>
 
@@ -91,41 +85,31 @@ summary(iris)  # Summary of the dataset
 ```
 
 
-### <a name="section1">1. What are t-test and Chi-squared test, and why are they important? </a>
+### <a name="section1">1. What is t-test, and why is it important? </a>
 
-#### Understand their statistical relevance
+#### Understand its statistical relevance
 
-T-tests and Chi-squared tests are two foundational tools in statistical inference. They help answer critical questions in science and social research. For instance:
+A t test is a statistical test that is used to compare the means of two groups. It is often used in hypothesis testing to determine whether a process or treatment actually has an effect on the population of interest, or whether two groups are different from one another. For instance:
 
--   **t-test**: Are two sample means statistically different? Example: "Do students in online classes score higher than those in traditional classes?"
--   **Chi-squared test**: Is there an association between two categorical variables? Example: "Is there a link between diet type and health outcomes?"
+- "Do students in online classes score higher than those in traditional classes?"
+
+- "Are the differences in exam scores between male and female students significant?"
 
 These tests provide robust frameworks to evaluate hypotheses and are widely applied across various fields, including biology, psychology, and business analytics.
 
-In science, many questions revolve around identifying differences or associations. For example, we might ask, "Are the differences in exam scores between male and female students significant?" or "Is there a link between smoking and lung cancer?" These types of questions can be addressed using statistical methods like t-tests and Chi-squared tests. Whether you're just starting with R or looking to enhance your knowledge of these tests, this tutorial will walk you through their application and interpretation step by step.
+##### Assumptions:
 
-We define t-test and Chi-squared test as follows: 
+The t test is a parametric test of difference, meaning that it makes the same assumptions about your data as other parametric tests. The t test assumes your data:
 
--   **t-test**: The t-test is a  statistical analysis that assists in deciding whether there is a significant difference between the means of two groups. This analysis assumes that the data collected follows a normal distribution. It is often used when the data sets are related to each other.
+- Normal distribution
+- Homogeneity of variance
+- Interval or ratio level of measurement
 
--   **Chi-squared test**: The chi-square test is a statistical analysis used to check if a significant relationship exists between two categorical variables in a sample. It does this by comparing the observed frequencies in each category of a cross-tabulation to the frequencies we expect by chance.
-
-Here are the differences of t-test and Chi-squared test: 
-
-- The t-test determines if the means of two groups are significantly different.
-
-- The chi-square test checks if a relationship exists between two categorical variables.
-
-- T-test requires data to meet assumptions: normal distribution, homogeneity of variance, and interval or ratio level of measurement.
-
-- The chi-square test assumes that variables are categorical, the data is a random sample, and the expected frequency for each cell is 5 or more.
+Note that a t test can only be used when comparing the means of two groups (a.k.a. pairwise comparison). If you want to compare more than two groups, or if you want to do multiple pairwise comparisons, use an ANOVA test or a post-hoc test.
 
 
 #### Learn appropriate scenarios for their use
 
-For **t-tests** and **chi-squared tests**, appropriate scenarios depend on the type of data and the research question being addressed:
-
-##### **t-Tests**
 t-tests are appropriate in the following scenarios:
 
 1. **Numerical Data**: When the data is continuous (e.g., height, weight, or length measurements).
@@ -165,6 +149,12 @@ Hypothesis testing is a basic idea in statistics that helps us decide if we have
 - The **p-value** tells us how likely it is to see our results (or something even more surprising) if the null hypothesis is true.
 - The **significance level (\(\alpha\))** is a cutoff point we choose (often 0.05). If the p-value is smaller than \(\alpha\), it means the results are unlikely under the null hypothesis, so we reject it.
 
+##### **tails** of the distribution:
+- For a **one-tailed test**, the p-value is calculated for results in one direction of interest (e.g., greater than or less than a certain value). The entire \(\alpha\) is concentrated in one tail of the distribution.
+- For a **two-tailed test**, the p-value accounts for extreme results in both directions, and \(\alpha\) is split equally between the two tails (e.g., \(0.025\) in each tail for \(\alpha = 0.05\)).
+
+<center><img src="picture/hypothesis-test-17.webp" alt="Img" width="600"/></center>
+
 ##### Type I and Type II Errors
 - **Type I Error**: This happens when we think something is happening (reject \(H_0\)) but actually, nothing is (false alarm).
 - **Type II Error**: This happens when we don’t notice something is happening (fail to reject \(H_0\)) even though it is (missed signal).
@@ -187,15 +177,57 @@ The `iris` dataset is a collection of flower measurements from three types of ir
 - **Petal.Width**: How wide the petal is (in cm).  
 - **Species**: Which species the flower belongs to (`setosa`, `versicolor`, or `virginica`).
 
-
+<center><img src="picture/iris-machinelearning.png" alt="Img"/></center>
 
 
 
 ### <a name="section3">3. T-test</a>
 
-Now, let's apply what we have learned into application! 
+### T-test Formula
+
+The formula for the **two-sample \(t\)-test** (a.k.a. the Student’s \(t\)-test) is shown below:
+
+\[
+t = \frac{\bar{x}_1 - \bar{x}_2}{\sqrt{s^2 \left( \frac{1}{n_1} + \frac{1}{n_2} \right)}}
+\]
+
+In this formula:
+
+- \(t\) is the \(t\)-value.
+
+- \(\bar{x}_1\) and \(\bar{x}_2\) are the means of the two groups being compared.
+
+- \(s^2\) is the pooled standard error of the two groups.
+
+- \(n_1\) and \(n_2\) are the number of observations in each group.
+
+A **larger \(t\)-value** indicates that the difference between group means is greater than the pooled standard error, showing a more significant difference between the groups.
+
+To determine significance:
+
+- Compare your calculated \(t\)-value against a critical value chart.
+
+- If the \(t\)-value exceeds the critical value (based on your significance level \(\alpha\) and degrees of freedom), you can reject the null hypothesis and conclude that the two groups are significantly different.
+
+
+There are three types of t-test: **One-sample t-test**, **Two-sample t-test**, and **Paired t-test**. You might come up with a question: **which test should I use**? 
+
+So, here is how you find a suitable t-test: 
+
+- If the groups come from a single population (e.g., measuring before and after an experimental treatment), perform a paired t test. This is a within-subjects design.
+
+- If the groups come from two different populations (e.g., two different species, or people from two separate cities), perform a two-sample t test (a.k.a. independent t test). This is a between-subjects design.
+
+- If there is one group being compared against a standard value (e.g., comparing the acidity of a liquid to a neutral pH of 7), perform a one-sample t test.
+
+
+
+
 
 <center><img src="picture/What-type-of-t-test-should-I-use.webp" alt="Img"/></center>
+
+Now, let's apply what we have learned into application! 
+
 
 #### **3.1 One-sample t-test**
 This tests if the mean of a single group is different from a specific value. 
@@ -216,6 +248,8 @@ t.test(iris$Sepal.Length, mu = 5.8)
 ```
 
 The output shows that: 
+
+<center><img src="picture/One Sample t-test.jpg" alt="Img" width="600"/></center>
 
 - **p-value**: \( p = 0.5226 \)  
 
@@ -252,6 +286,8 @@ t.test(setosa$Sepal.Length, versicolor$Sepal.Length)
 ```
 The output shows that: 
 
+<center><img src="picture/two sample t test.jpg" alt="Img" width="600"/></center>
+
 - **p-value**: \( p < 2.2e-16 \)  
 
   This is much smaller than 0.05, so we *reject* the null hypothesis. 
@@ -283,6 +319,8 @@ t.test(setosa_data$Sepal.Length, setosa_data$Petal.Length, paired = TRUE)
 ```
 The output shows that: 
 
+<center><img src="picture/paired t test.jpg" alt="Img" width="600"/></center>
+
 - **p-value**: \( p < 2.2e-16 \)  
 
   This is much smaller than 0.05, so we *reject* the null hypothesis. 
@@ -293,54 +331,13 @@ Therefore, we can conclude from our result that, the mean of `Sepal.Length` is n
 
 
 
+### <a name="section4">4. Chi-squared Test</a>
 
-``` r
-# Create fake data
-x_dat <- rnorm(n = 100, mean = 5, sd = 2)  # x data
-y_dat <- rnorm(n = 100, mean = 10, sd = 0.2)  # y data
-xy <- data.frame(x_dat, y_dat)  # combine into data frame
-```
 
-Here you can add some more text if you wish.
-
-``` r
-xy_fil <- xy %>%  # Create object with the contents of `xy`
-    filter(x_dat < 7.5)  # Keep rows where `x_dat` is less than 7.5
-```
-
-And finally, plot the data:
-
-``` r
-ggplot(data = xy_fil, aes(x = x_dat, y = y_dat)) +  # Select the data to use
-    geom_point() +  # Draw scatter points
-    geom_smooth(method = "loess")  # Draw a loess curve
-```
-
-At this point it would be a good idea to include an image of what the plot is meant to look like so students can check they've done it right. Replace `IMAGE_NAME.png` with your own image file:
-
-<center><img src="{{ site.baseurl }}/IMAGE_NAME.png" alt="Img" style="width: 800px;"/></center>
+### <a name="section5">5. Visualizing Results</a>
 
 
 
-More text, code and images.
-
-This is the end of the tutorial. Summarise what the student has learned, possibly even with a list of learning outcomes. In this tutorial we learned:
-
-##### - how to generate fake bivariate data
-
-##### - how to create a scatterplot in ggplot2
-
-##### - some of the different plot methods in ggplot2
-
-We can also provide some useful links, include a contact form and a way to send feedback.
-
-For more on `ggplot2`, read the official <a href="https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf" target="_blank">ggplot2 cheatsheet</a>.
-
-Everything below this is footer material - text and links that appears at the end of all of your tutorials.
-
-<hr>
-
-<hr>
 
 #### Check out our <a href="https://ourcodingclub.github.io/links/" target="_blank">Useful links</a> page where you can find loads of guides and cheatsheets.
 
