@@ -7,6 +7,8 @@ output:
 
 <center><img src="picture/title intro T-test R.jpg" alt="Img"/></center>
 
+#### <a href="#sectiono"> 0. R set up</a>
+
 #### <a href="#section1"> 1. What are T-test, and why is it important?</a>
 
 -   Understand its statistical relevance.
@@ -34,18 +36,19 @@ output:
 
 #### <a href="#section5"> 5. Summary and future study direction</a>
 
+- Summary
+
 - What's next?
 
+This tutorial introduces the fundamental statistical tests: the **T-test**. You will learn its purposes, how to apply them, and how to interpret their results using R. These skills are crucial for analyzing data in various fields, including environmental and ecological sciences.
 
-This tutorial introduces the fundamental statistical tests: the T-test. You will learn its purposes, how to apply them, and how to interpret their results using R. These skills are crucial for analyzing data in various fields, including environmental and ecological sciences.
+The link for this tutorial is <a href="https://eddatascienceees.github.io/tutorial-ChiantiRuan/" target="_blank">this GitHub link</a>. You can get all of the resources for this tutorial from <a href="https://github.com/EdDataScienceEES/tutorial-ChiantiRuan.git" target="_blank">this GitHub repository</a>. Clone and download the repo as a zip file, then unzip it.
 
-You can get all of the resources for this tutorial from <a href="https://github.com/ourcodingclub/CC-EAB-tut-ideas" target="_blank">this GitHub repository</a>. Clone and download the repo as a zip file, then unzip it.
+---
 
-<center><img src="{{ site.baseurl }}/tutheaderbl.png" alt="Img"/></center>
+## <a name="section0">0. R set up </a>
 
-## R set up
-
-It’s completely okay if you’ve never used R before—you can walk through everything step by step with us! Everyone starts as a beginner, and we’re here to guide you through the process and make it as smooth as possible. Together, we’ll cover the basics and get you comfortable with using R in no time. A great resource to guide you through this process is the Coding Club tutorial Getting Started with R and RStudio. While you’re at it, take a look at their Troubleshooting and How to Find Help tutorial—it’s a lifesaver—and the Coding Etiquette guide, which offers excellent tips for navigating the coding community.
+It’s completely okay if you’ve never used R before—you can walk through everything step by step with us! Everyone starts as a beginner, and we’re here to guide you through the process and make it as smooth as possible. Together, we’ll cover the basics and get you comfortable with using R in no time. A great resource to guide you through this process is the Coding Club tutorial <a href="https://ourcodingclub.github.io/tutorials/intro-to-r/" target="_blank">Getting Started with R and RStudio</a>. While you’re at it, take a look at their <a href="https://ourcodingclub.github.io/tutorials/troubleshooting/" target="_blank">Troubleshooting and How to Find Help</a> tutorial—it’s really helpful — and the <a href="https://ourcodingclub.github.io/tutorials/etiquette/index.html" target="_blank">Coding Etiquette guide<a/>, which offers excellent tips for navigating the coding community.
 
 Now, let's get started.
 
@@ -72,6 +75,7 @@ Then, load the required packages and dataset, installing them first if they are 
 # load packages
 library(ggplot2)
 library(reshape2)
+library(dplyr)
 
 # Load the iris dataset
 data(iris)
@@ -79,6 +83,9 @@ head(iris)  # View the first few rows
 summary(iris)  # Summary of the dataset
 ```
 
+After having an idea on how to deal with R, let's now start to learn T-test. 
+
+---
 
 ### <a name="section1">1. What is t-test, and why is it important? </a>
 
@@ -111,22 +118,14 @@ t-tests are appropriate in the following scenarios:
 
 2. **Comparing Means**: When the goal is to compare the means of one or more groups.
    - **One-sample t-test**: Used to check if the sample mean differs from a known or hypothetical value.
-   - **Independent t-test**: Used to compare the means of two independent groups (e.g., two species).
+   - **Two-sample t-test**: Used to compare the means of two independent groups (e.g., two species).
    - **Paired t-test**: Used to compare measurements from the same group under different conditions or at different times (e.g., before-and-after studies).
-
-#### **Chi-squared Tests**
-Chi-squared tests are appropriate in the following scenarios:
-
-1. **Categorical Data**: When the data consists of categories or frequencies (e.g., species types, groups).
-
-2. **Testing Independence**: Used to assess if two categorical variables are related (e.g., species and sepal length groups).
-
-3. **Goodness-of-Fit**: Used to test if observed categorical data matches expected proportions.
 
 By understanding these scenarios, it becomes easier to select the appropriate test for the analysis, ensuring valid and interpretable results.
 
+<center><img src="picture/t-test_final2-d26bbb129cc441c192ccf8e784ae06a4.png" alt="Img" width = 600/></center>
 
-
+--- 
 
 
 
@@ -136,32 +135,37 @@ By understanding these scenarios, it becomes easier to select the appropriate te
 
 Hypothesis testing is a basic idea in statistics that helps us decide if we have enough evidence to support a claim about a group or population. It has a few important parts:
 
-##### Null and Alternative Hypotheses
+**Null and Alternative Hypotheses**
+
 - **Null Hypothesis (\(H_0\))**: This is like the default assumption, saying nothing special is happening. For example, "There’s no difference between two groups."
+
 - **Alternative Hypothesis (\(H_a\))**: This is the claim we’re testing, suggesting something *is* happening, like "The two groups are different."
 
-##### p-value and Significance Level
+**p-value and Significance Level**
+
 - The **p-value** tells us how likely it is to see our results (or something even more surprising) if the null hypothesis is true.
+
 - The **significance level (\(\alpha\))** is a cutoff point we choose (often 0.05). If the p-value is smaller than \(\alpha\), it means the results are unlikely under the null hypothesis, so we reject it.
 
-##### **tails** of the distribution:
+**tails of the distribution**
+
 - For a **one-tailed test**, the p-value is calculated for results in one direction of interest (e.g., greater than or less than a certain value). The entire \(\alpha\) is concentrated in one tail of the distribution.
+
 - For a **two-tailed test**, the p-value accounts for extreme results in both directions, and \(\alpha\) is split equally between the two tails (e.g., \(0.025\) in each tail for \(\alpha = 0.05\)).
 
 <center><img src="picture/hypothesis-test-17.webp" alt="Img" width="600"/></center>
 
-##### Type I and Type II Errors
+**Type I and Type II Errors**
+
 - **Type I Error**: This happens when we think something is happening (reject \(H_0\)) but actually, nothing is (false alarm).
+
 - **Type II Error**: This happens when we don’t notice something is happening (fail to reject \(H_0\)) even though it is (missed signal).
 
 Hypothesis testing is useful because it helps us figure out whether the patterns we see in data are real or just random chance.
 
 This might seems a lot to understand. Don't worry, we will go through this together step by step in latter sections. 
 
-
-
-
-Before we dive in, we need to first understand what dataset we are using. 
+Before we dive into the different cases of T-test, we need to first understand what dataset we are using. 
 
 ### **What is the `iris` Dataset?**
 The `iris` dataset is a collection of flower measurements from three types of iris flowers: `setosa`, `versicolor`, and `virginica`. There are 150 rows in total (50 flowers of each species). The dataset has these columns:
@@ -174,7 +178,7 @@ The `iris` dataset is a collection of flower measurements from three types of ir
 
 <center><img src="picture/iris-machinelearning.png" alt="Img"/></center>
 
-
+---
 
 ### <a name="section3">3. T-test</a>
 
@@ -233,8 +237,6 @@ This tests if the mean of a single group is different from a specific value.
 
 - **Alternative Hypothesis (\(H_a\))**: The mean sepal length is not equal to 5.8.
 
-In our example, we could write our hypothesis as: 
-
 Let’s check if the average sepal length of all flowers in the `iris` dataset is significantly different from 5.8 (a hypothetical value).
 
 ```r
@@ -245,6 +247,8 @@ t.test(iris$Sepal.Length, mu = 5.8)
 The output shows that: 
 
 <center><img src="picture/One Sample t-test.jpg" alt="Img" width="600"/></center>
+
+Since hypothesis testing primarily relies on the p-value, we will focus on analyzing the p-value.
 
 - **p-value**: \( p = 0.5226 \)  
 
@@ -324,7 +328,7 @@ Therefore, we can conclude from our result that, the mean of `Sepal.Length` is n
 
 <center><img src="picture/iris_baby_blue.jpg" alt="Img" width="600"/></center>
 
-
+---
 
 ### <a name="section4">4. Visualizing Results</a>
 
@@ -419,9 +423,11 @@ This density plot compares the `Sepal.Length` distributions for `setosa` (red) a
 If you are interested in exploring more data visualisation methods, or creating a more beautiful graph, you could find helpful tutorials here <a href="https://ourcodingclub.github.io/tutorials/datavis/" target="_blank">Useful links</a>.
 
 
-
+---
 
 ### <a name="section5">5. Summary and future study direction</a>
+
+#### Summary
 
 Throughout this tutorial, we explored the fundamentals of the **t-test**, its types, and their respective applications in hypothesis testing. By applying the t-test in R, we not only validated statistical differences but also enhanced our interpretation with visualizations. The examples from the `iris` dataset demonstrate how to seamlessly integrate statistical tests into real-world data analysis workflows.
 
@@ -454,23 +460,3 @@ If you have any questions about completing this tutorial, please contact us on [
 </li>
 
 </ul>
-
-#####   Subscribe to our mailing list:
-
-::: container
-```         
-<div class="block">
-    <!-- subscribe form start -->
-    <div class="form-group">
-        <form action="https://getsimpleform.com/messages?form_api_token=de1ba2f2f947822946fb6e835437ec78" method="post">
-        <div class="form-group">
-            <input type='text' class="form-control" name='Email' placeholder="Email" required/>
-        </div>
-        <div>
-                        <button class="btn btn-default" type='submit'>Subscribe</button>
-                    </div>
-                </form>
-    </div>
-</div>
-```
-:::
