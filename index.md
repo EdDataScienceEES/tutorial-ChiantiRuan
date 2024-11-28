@@ -7,38 +7,41 @@ output:
 
 <center><img src="picture/title intro T-test R.jpg" alt="Img"/></center>
 
+### Tutorial aims and steps:
+
 #### <a href="#sectiono"> 0. R set up</a>
 
 #### <a href="#section1"> 1. What are T-test, and why is it important?</a>
 
--   Understand its statistical relevance.
--   Learn appropriate scenarios for its use.
+-   <a href="#section11">Understand its statistical relevance.</a>
+-   <a href="#section12">Learn appropriate scenarios for its use.</a>
 
 #### <a href="#section2"> 2. Basics of Hypothesis Testing</a>
 
--   Understanding null and alternative hypotheses.
--   Explaining p-value and significance level.
--   Introducing types of errors (Type I and Type II).
+-   <a href="#section21">Hypothesis Testing.</a>
+-   <a href="#section22">p-value and Significance Level.</a>
+-   <a href="#section23">tails of the distribution</a>
+-   <a href="#section24">Introducing types of errors (Type I and Type II).</a>
 
 #### <a href="#section3"> 3. T-test</a>
 
--   **3.1 One-sample t-test**: Test if a mean differs from a hypothetical value.
--   **3.2 Independent t-test**: Compare means between two independent groups.
--   **3.3 Paired t-test**: Compare means of paired data (e.g., repeated measures).
+-   <a href="#section31">**3.1 One-sample t-test**: Test if a mean differs from a hypothetical value.</a>
+-   <a href="#section32">**3.2 Independent t-test**: Compare means between two independent groups.</a>
+-   <a href="#section33">**3.3 Paired t-test**: Compare means of paired data (e.g., repeated measures).</a>
 
 #### <a href="#section4"> 4. Visualizing Results</a>
 
--   One-Sample t-Test: Histogram with Hypothesized Mean
+-   <a href="#section41">One-Sample t-Test: Histogram with Hypothesized Mean</a>
 
--   Two-sample t-Test: Boxplot
+-   <a href="#section42">Two-sample t-Test: Boxplot</a>
 
--   Two-sample T-test: Density plot
+-   <a href="#section43">Two-sample T-test: Density plot</a>
 
 #### <a href="#section5"> 5. Summary and future study direction</a>
 
-- Summary
+- <a href="#section51">Summary</a>
 
-- What's next?
+- <a href="#section52">What's next?</a>
 
 This tutorial introduces the fundamental statistical tests: the **T-test**. You will learn its purposes, how to apply them, and how to interpret their results using R. These skills are crucial for analyzing data in various fields, including environmental and ecological sciences.
 
@@ -89,7 +92,7 @@ After having an idea on how to deal with R, let's now start to learn T-test.
 
 ### <a name="section1">1. What is t-test, and why is it important? </a>
 
-#### Understand its statistical relevance
+#### <a name="section11">Understand its statistical relevance</a>
 
 A t test is a statistical test that is used to compare the means of two groups. It is often used in hypothesis testing to determine whether a process or treatment actually has an effect on the population of interest, or whether two groups are different from one another. For instance:
 
@@ -110,7 +113,7 @@ The t test is a parametric test of difference, meaning that it makes the same as
 Note that a t test can only be used when comparing the means of two groups (a.k.a. pairwise comparison). If you want to compare more than two groups, or if you want to do multiple pairwise comparisons, use an ANOVA test or a post-hoc test.
 
 
-#### Learn appropriate scenarios for their use
+#### <a name="section12">Learn appropriate scenarios for their use</a>
 
 t-tests are appropriate in the following scenarios:
 
@@ -131,7 +134,7 @@ By understanding these scenarios, it becomes easier to select the appropriate te
 
 ### <a name="section2">2. Basics of Hypothesis Testing</a>
 
-#### Hypothesis Testing
+#### <a name="section21">Hypothesis Testing</a>
 
 Hypothesis testing is a basic idea in statistics that helps us decide if we have enough evidence to support a claim about a group or population. It has a few important parts:
 
@@ -141,13 +144,13 @@ Hypothesis testing is a basic idea in statistics that helps us decide if we have
 
 - **Alternative Hypothesis (\(H_a\))**: This is the claim we’re testing, suggesting something *is* happening, like "The two groups are different."
 
-**p-value and Significance Level**
+#### <a name="section22">p-value and Significance Level</a>
 
 - The **p-value** tells us how likely it is to see our results (or something even more surprising) if the null hypothesis is true.
 
 - The **significance level (\(\alpha\))** is a cutoff point we choose (often 0.05). If the p-value is smaller than \(\alpha\), it means the results are unlikely under the null hypothesis, so we reject it.
 
-**tails of the distribution**
+#### <a name="section23">tails of the distribution**</a>
 
 - For a **one-tailed test**, the p-value is calculated for results in one direction of interest (e.g., greater than or less than a certain value). The entire \(\alpha\) is concentrated in one tail of the distribution.
 
@@ -155,7 +158,7 @@ Hypothesis testing is a basic idea in statistics that helps us decide if we have
 
 <center><img src="picture/hypothesis-test-17.webp" alt="Img" width="600"/></center>
 
-**Type I and Type II Errors**
+#### <a name="section24">Type I and Type II Errors**</a>
 
 - **Type I Error**: This happens when we think something is happening (reject \(H_0\)) but actually, nothing is (false alarm).
 
@@ -228,7 +231,7 @@ So, here is how you find a suitable t-test:
 Now, let's apply what we have learned into application! 
 
 
-#### **3.1 One-sample t-test**
+#### <a name="section31">**3.1 One-sample t-test**</a>
 This tests if the mean of a single group is different from a specific value. 
 
 **Hypotheses:**
@@ -263,7 +266,7 @@ The average sepal length in the `iris` dataset is not significantly different fr
 Does that build you some confidence? Now, let's look at the next test. 
 
 
-#### **3.2 Two-sample t-test**
+#### <a name="section32">**3.2 Two-sample t-test**</a>
 
 This test compares the averages of two separate groups to see if they’re different.
 
@@ -297,7 +300,7 @@ Then, we can conclude from our result that, the mean sepal length of `setosa` an
 
 Now, let's learn one more method. 
 
-#### **3.3 Paired t-test**
+#### <a name="section33">**3.3 Paired t-test**</a>
 
 This test is used to compare two related sets of measurements, like "before and after" scenarios.
 
@@ -334,7 +337,7 @@ Therefore, we can conclude from our result that, the mean of `Sepal.Length` is n
 
 To complement the t-test analysis, we’ll use visualisations to better understand the data and the relationships between groups. While the t-test provides numerical evidence for differences between means, visualising the data helps us grasp the distribution, variability, and potential outliers. In this section, we’ll use different plots to illustrate the results of both one-sample and independent t-tests in an accessible and intuitive way.
 
-#### One-Sample t-Test: Histogram with Hypothesized Mean
+#### <a name="section41">One-Sample t-Test: Histogram with Hypothesized Mean</a>
 
 **Why this plot?**
 
@@ -362,7 +365,7 @@ The output is shown as:
 The distribution of `Sepal.Length` appears roughly normal, with no major skewness or irregularities. This suggests that the data does not violate the assumption of normality, which supports the use of the t-test. The dashed line at ($mu = 5.8$) lies close to the center of the distribution, hinting that the mean of `Sepal.Length` might not be significantly different from the hypothesized mean. However, the t-test confirms this numerically.
 
 
-#### Two-sample t-Test: Boxplot
+#### <a name="section42">Two-sample t-Test: Boxplot</a>
 
 **Why this plot?**
 
@@ -391,7 +394,7 @@ If the boxes for `setosa` and `versicolor` overlap a lot, their means might not 
 
 
 
-#### Two-sample T-test: Density plot
+#### <a name="section43">Two-sample T-test: Density plot</a>
 
 **Why this plot?**
 
@@ -427,11 +430,11 @@ If you are interested in exploring more data visualisation methods, or creating 
 
 ### <a name="section5">5. Summary and future study direction</a>
 
-#### Summary
+#### <a name="section51">Summary</a>
 
 Throughout this tutorial, we explored the fundamentals of the **t-test**, its types, and their respective applications in hypothesis testing. By applying the t-test in R, we not only validated statistical differences but also enhanced our interpretation with visualizations. The examples from the `iris` dataset demonstrate how to seamlessly integrate statistical tests into real-world data analysis workflows.
 
-#### What’s Next?
+#### <a name="section52">What’s Next?</a>
 
 To further solidify your understanding:
 - Experiment with other datasets to practice t-tests.
