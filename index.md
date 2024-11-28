@@ -459,7 +459,8 @@ If you have any questions about completing this tutorial, please contact us on [
 
 #####   Subscribe to our mailing list:
 
-     
+::: container
+```         
 <div class="block">
     <!-- subscribe form start -->
     <div class="form-group">
@@ -473,4 +474,5 @@ If you have any questions about completing this tutorial, please contact us on [
                 </form>
     </div>
 </div>
-
+```
+:::
