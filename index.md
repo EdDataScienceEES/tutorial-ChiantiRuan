@@ -7,7 +7,7 @@ output:
 
 <center><img src="{{ site.baseurl }}/tutheaderbl.png" alt="Img"/></center>
 
-### Introduction of T-test and CHi-squared test in R
+### Introduction of T-test and Chi-squared test in R
 
 #### <a href="#section1"> 1. What are t-test and Chi-squared test, and why are they important?</a>
 
@@ -52,6 +52,7 @@ This tutorial introduces two fundamental statistical tests: the t-test and the C
 
 You can get all of the resources for this tutorial from <a href="https://github.com/ourcodingclub/CC-EAB-tut-ideas" target="_blank">this GitHub repository</a>. Clone and download the repo as a zip file, then unzip it.
 
+<center><img src="{{ site.baseurl }}/tutheaderbl.png" alt="Img"/></center>
 
 ## R set up
 
@@ -194,6 +195,7 @@ The `iris` dataset is a collection of flower measurements from three types of ir
 
 Now, let's apply what we have learned into application! 
 
+<center><img src="picture/What-type-of-t-test-should-I-use.webp" alt="Img"/></center>
 
 #### **3.1 One-sample t-test**
 This tests if the mean of a single group is different from a specific value. 
@@ -222,6 +224,8 @@ The output shows that:
 Then, we get the **conclusion**: 
 
 The average sepal length in the `iris` dataset is not significantly different from 5.8. Any small difference is likely due to random chance.
+
+<center><img src="picture/DSC_0197-Copy-scaled.jpg" alt="Img" width="600"/></center>
 
 Does that build you some confidence? Now, let's look at the next test. 
 
@@ -254,6 +258,8 @@ The output shows that:
 
 Then, we can conclude from our result that, the mean sepal length of `setosa` and `versicolor` are not equal. 
 
+<center><img src="picture/iris_versicolor_marginal_water_Merebrook_pondplants.webp" alt="Img"/ width="600"></center>
+
 Now, let's learn one more method. 
 
 #### **3.3 Paired t-test**
@@ -282,6 +288,9 @@ The output shows that:
   This is much smaller than 0.05, so we *reject* the null hypothesis. 
   
 Therefore, we can conclude from our result that, the mean of `Sepal.Length` is not equal to the mean of `Petal.Length` for `setosa`. 
+
+<center><img src="picture/iris_baby_blue.jpg" alt="Img" width="600"/></center>
+
 
 
 
