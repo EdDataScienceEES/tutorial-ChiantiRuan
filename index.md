@@ -187,21 +187,61 @@ The `iris` dataset is a collection of flower measurements from three types of ir
 
 ### T-test Formula
 
-The formula for the **two-sample \(t\)-test** (a.k.a. the Student’s \(t\)-test) is shown below:
+There are three types of t-test: **One-sample t-test**, **Two-sample t-test**, and **Paired t-test**. Their formulas are: 
+
+#### 1. One-sample \(t\)-test
+The formula for the one-sample \(t\)-test is:
+
+\[
+t = \frac{\bar{x} - \mu_0}{\frac{s}{\sqrt{n}}}
+\]
+
+Where:
+
+- \( \bar{x} \) = sample mean  
+
+- \( \mu_0 \) = hypothesized population mean  
+
+- \( s \) = sample standard deviation  
+
+- \( n \) = sample size  
+
+
+#### 2. Independent two-sample \(t\)-test (Student’s \(t\)-test)
+The formula for the independent two-sample \(t\)-test is:
 
 \[
 t = \frac{\bar{x}_1 - \bar{x}_2}{\sqrt{s^2 \left( \frac{1}{n_1} + \frac{1}{n_2} \right)}}
 \]
 
-In this formula:
+Where:
 
-- \(t\) is the \(t\)-value.
+- \( \bar{x}_1, \bar{x}_2 \) = sample means of the two groups  
 
-- \(\bar{x}_1\) and \(\bar{x}_2\) are the means of the two groups being compared.
+- \( s^2 \) = pooled variance:
+  \[
+  s^2 = \frac{(n_1 - 1)s_1^2 + (n_2 - 1)s_2^2}{n_1 + n_2 - 2}
+  \]
+  
+- \( n_1, n_2 \) = sample sizes of the two groups  
 
-- \(s^2\) is the pooled standard error of the two groups.
+- \( s_1^2, s_2^2 \) = sample variances of the two groups  
 
-- \(n_1\) and \(n_2\) are the number of observations in each group.
+
+#### 3. Paired \(t\)-test
+The formula for the paired \(t\)-test is:
+
+\[
+t = \frac{\bar{d}}{\frac{s_d}{\sqrt{n}}}
+\]
+
+Where:
+
+- \( \bar{d} \) = mean of the differences between paired observations  
+
+- \( s_d \) = standard deviation of the differences  
+
+- \( n \) = number of paired observations  
 
 A **larger \(t\)-value** indicates that the difference between group means is greater than the pooled standard error, showing a more significant difference between the groups.
 
@@ -212,7 +252,11 @@ To determine significance:
 - If the \(t\)-value exceeds the critical value (based on your significance level \(\alpha\) and degrees of freedom), you can reject the null hypothesis and conclude that the two groups are significantly different.
 
 
-There are three types of t-test: **One-sample t-test**, **Two-sample t-test**, and **Paired t-test**. You might come up with a question: **which test should I use**? 
+---
+
+
+
+You might come up with a question: **which test should I use**? 
 
 So, here is how you find a suitable t-test: 
 
