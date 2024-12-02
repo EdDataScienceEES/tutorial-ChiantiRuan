@@ -9,7 +9,7 @@ output:
 
 ### Tutorial aims and steps:
 
-#### <a href="#sectiono"> 0. R set up</a>
+#### <a href="#section0"> 0. R set up</a>
 
 #### <a href="#section1"> 1. What are T-test, and why is it important?</a>
 
@@ -45,15 +45,18 @@ output:
 
 This tutorial introduces the fundamental statistical tests: the **T-test**. You will learn its purposes, how to apply them, and how to interpret their results using R. These skills are crucial for analyzing data in various fields, including environmental and ecological sciences.
 
-The link for this tutorial is <a href="https://eddatascienceees.github.io/tutorial-ChiantiRuan/" target="_blank">this GitHub link</a>. You can get all of the resources for this tutorial from <a href="https://github.com/EdDataScienceEES/tutorial-ChiantiRuan.git" target="_blank">this GitHub repository</a>. Clone and download the repo as a zip file, then unzip it.
+The link for this tutorial is <a href="https://eddatascienceees.github.io/tutorial-ChiantiRuan/" target="_blank">this GitHub link</a>. You can get all of the resources for this tutorial from this GitHub repository. Clone and download the repo as a zip file, then unzip it.
+
+<center><img src="picture/t test in r.jpg" alt="Img" width="600"/></center>
 
 ---
 
+
 ## <a name="section0">0. R set up </a>
 
-It’s completely okay if you’ve never used R before—you can walk through everything step by step with us! Everyone starts as a beginner, and we’re here to guide you through the process and make it as smooth as possible. Together, we’ll cover the basics and get you comfortable with using R in no time. A great resource to guide you through this process is the Coding Club tutorial <a href="https://ourcodingclub.github.io/tutorials/intro-to-r/" target="_blank">Getting Started with R and RStudio</a>. While you’re at it, take a look at their <a href="https://ourcodingclub.github.io/tutorials/troubleshooting/" target="_blank">Troubleshooting and How to Find Help</a> tutorial—it’s really helpful — and the <a href="https://ourcodingclub.github.io/tutorials/etiquette/index.html" target="_blank">Coding Etiquette guide<a/>, which offers excellent tips for navigating the coding community.
+It’s completely okay if you’ve never used R before—you can walk through everything step by step with us! Everyone starts as a beginner, and we’re here to guide you through the process and make it as smooth as possible. Together, we’ll cover the basics and get you comfortable with using R in no time. A great resource to guide you through this process is the Coding Club tutorial <a href="https://ourcodingclub.github.io/tutorials/intro-to-r/" target="_blank">Getting Started with R and RStudio</a>. While you’re at it, take a look at their <a href="https://ourcodingclub.github.io/tutorials/troubleshooting/" target="_blank">Troubleshooting and How to Find Help</a> tutorial, and the <a href="https://ourcodingclub.github.io/tutorials/etiquette/index.html" target="_blank">Coding Etiquette guide<a/>, which offers excellent tips for navigating the coding community.
 
-Now, let's get started.
+Now, let's get started! 
 
 First, open `RStudio`, create a new *script* by clicking on `File/New File/R Script`. A Script in R is a file where you can write and save code to run, edit, and reuse later. Name your script appropriately, so that it clearly reflects its purpose and makes it easy to identify later. It is always a good idea the write a header to your script with your name, data and purpose as shown below.
 
@@ -88,6 +91,8 @@ summary(iris)  # Summary of the dataset
 
 After having an idea on how to deal with R, let's now start to learn T-test. 
 
+<center><img src="picture/install_r_packages.png" alt="Img" width="600"/></center>
+
 ---
 
 ### <a name="section1">1. What is t-test, and why is it important? </a>
@@ -102,22 +107,31 @@ A t test is a statistical test that is used to compare the means of two groups. 
 
 These tests provide robust frameworks to evaluate hypotheses and are widely applied across various fields, including biology, psychology, and business analytics.
 
+
+<div style="background-color: #d9edf7; padding: 10px; border-radius: 5px;">
 ##### Assumptions:
 
 The t test is a parametric test of difference, meaning that it makes the same assumptions about your data as other parametric tests. The t test assumes your data:
 
-- Normal distribution
-- Homogeneity of variance
-- Interval or ratio level of measurement
+- **Independence**: The observations in one sample are independent of the observations in the other sample.
 
-Note that a t test can only be used when comparing the means of two groups (a.k.a. pairwise comparison). If you want to compare more than two groups, or if you want to do multiple pairwise comparisons, use an ANOVA test or a post-hoc test.
+- **Normality**: Both samples are approximately normally distributed.
 
+- **Homogeneity of Variances**: Both samples have approximately the same variance.
+
+- **Random Sampling**: Both samples were obtained using a random sampling method.
+
+</div>
+
+Note that a t test can only be used when comparing the means of **two groups** (a.k.a. pairwise comparison). If you want to compare more than two groups, or if you want to do multiple pairwise comparisons, use an ANOVA test or a post-hoc test.
+
+<br>
 
 #### <a name="section12">Learn appropriate scenarios for their use</a>
 
 t-tests are appropriate in the following scenarios:
 
-1. **Numerical Data**: When the data is continuous (e.g., height, weight, or length measurements).
+1. **Numerical Data**: When the data is **continuous** (e.g., height, weight, or length measurements).
 
 2. **Comparing Means**: When the goal is to compare the means of one or more groups.
    - **One-sample t-test**: Used to check if the sample mean differs from a known or hypothetical value.
@@ -144,11 +158,15 @@ Hypothesis testing is a basic idea in statistics that helps us decide if we have
 
 - **Alternative Hypothesis (\(H_a\))**: This is the claim we’re testing, suggesting something *is* happening, like "The two groups are different."
 
+<br>
+
 #### <a name="section22">p-value and Significance Level</a>
 
 - The **p-value** tells us how likely it is to see our results (or something even more surprising) if the null hypothesis is true.
 
 - The **significance level (\(\alpha\))** is a cutoff point we choose (often 0.05). If the p-value is smaller than \(\alpha\), it means the results are unlikely under the null hypothesis, so we reject it.
+
+<br>
 
 #### <a name="section23">tails of the distribution**</a>
 
@@ -157,6 +175,8 @@ Hypothesis testing is a basic idea in statistics that helps us decide if we have
 - For a **two-tailed test**, the p-value accounts for extreme results in both directions, and \(\alpha\) is split equally between the two tails (e.g., \(0.025\) in each tail for \(\alpha = 0.05\)).
 
 <center><img src="picture/hypothesis-test-17.webp" alt="Img" width="600"/></center>
+
+<br>
 
 #### <a name="section24">Type I and Type II Errors**</a>
 
@@ -169,6 +189,8 @@ Hypothesis testing is useful because it helps us figure out whether the patterns
 This might seems a lot to understand. Don't worry, we will go through this together step by step in latter sections. 
 
 Before we dive into the different cases of T-test, we need to first understand what dataset we are using. 
+
+<br>
 
 ### **What is the `iris` Dataset?**
 The `iris` dataset is a collection of flower measurements from three types of iris flowers: `setosa`, `versicolor`, and `virginica`. There are 150 rows in total (50 flowers of each species). The dataset has these columns:
@@ -208,6 +230,9 @@ Where:
 
 
 #### 2. Independent two-sample \(t\)-test (Student’s \(t\)-test)
+
+**Student's t-test**
+
 The formula for the independent two-sample \(t\)-test is:
 
 \[
@@ -227,6 +252,32 @@ Where:
 
 - \( s_1^2, s_2^2 \) = sample variances of the two groups  
 
+<br><br>
+
+**Welch’s \(t\)-test**
+
+When the assumption of equal variances is not met, **Welch’s \(t\)-test** should be used. The formula for Welch’s \(t\)-test is:
+
+\[
+t = \frac{\bar{x}_1 - \bar{x}_2}{\sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}}
+\]
+
+Where:
+
+- \( \bar{x}_1, \bar{x}_2 \) = sample means of the two groups  
+- \( s_1^2, s_2^2 \) = sample variances of the two groups  
+- \( n_1, n_2 \) = sample sizes of the two groups  
+
+
+**Key Differences**:
+
+- **Student’s \(t\)-test** assumes equal variances (\(s_1^2 \approx s_2^2\)) and uses pooled variance.
+- **Welch’s \(t\)-test** does not assume equal variances and adjusts the degrees of freedom accordingly.
+
+Welch’s \(t\)-test is more robust and is generally preferred when the two groups have unequal variances or significantly different sample sizes.
+
+
+<br>
 
 #### 3. Paired \(t\)-test
 The formula for the paired \(t\)-test is:
@@ -274,6 +325,7 @@ So, here is how you find a suitable t-test:
 
 Now, let's apply what we have learned into application! 
 
+<br>
 
 #### <a name="section31">**3.1 One-sample t-test**</a>
 This tests if the mean of a single group is different from a specific value. 
@@ -309,6 +361,7 @@ The average sepal length in the `iris` dataset is not significantly different fr
 
 Does that build you some confidence? Now, let's look at the next test. 
 
+<br>
 
 #### <a name="section32">**3.2 Two-sample t-test**</a>
 
@@ -343,6 +396,8 @@ Then, we can conclude from our result that, the mean sepal length of `setosa` an
 <center><img src="picture/iris_versicolor_marginal_water_Merebrook_pondplants.webp" alt="Img"/ width="600"></center>
 
 Now, let's learn one more method. 
+
+<br>
 
 #### <a name="section33">**3.3 Paired t-test**</a>
 
@@ -381,6 +436,8 @@ Therefore, we can conclude from our result that, the mean of `Sepal.Length` is n
 
 To complement the t-test analysis, we’ll use visualisations to better understand the data and the relationships between groups. While the t-test provides numerical evidence for differences between means, visualising the data helps us grasp the distribution, variability, and potential outliers. In this section, we’ll use different plots to illustrate the results of both one-sample and independent t-tests in an accessible and intuitive way.
 
+<br>
+
 #### <a name="section41">One-Sample t-Test: Histogram with Hypothesized Mean</a>
 
 **Why this plot?**
@@ -408,6 +465,7 @@ The output is shown as:
 
 The distribution of `Sepal.Length` appears roughly normal, with no major skewness or irregularities. This suggests that the data does not violate the assumption of normality, which supports the use of the t-test. The dashed line at ($mu = 5.8$) lies close to the center of the distribution, hinting that the mean of `Sepal.Length` might not be significantly different from the hypothesized mean. However, the t-test confirms this numerically.
 
+<br>
 
 #### <a name="section42">Two-sample t-Test: Boxplot</a>
 
@@ -436,7 +494,7 @@ If the boxes for `setosa` and `versicolor` overlap a lot, their means might not 
 
 <center><img src="picture/q52.png" alt="Img" width="600"/></center>
 
-
+<br>
 
 #### <a name="section43">Two-sample T-test: Density plot</a>
 
@@ -474,9 +532,13 @@ If you are interested in exploring more data visualisation methods, or creating 
 
 ### <a name="section5">5. Summary and future study direction</a>
 
+<br>
+
 #### <a name="section51">Summary</a>
 
 Throughout this tutorial, we explored the fundamentals of the **t-test**, its types, and their respective applications in hypothesis testing. By applying the t-test in R, we not only validated statistical differences but also enhanced our interpretation with visualizations. The examples from the `iris` dataset demonstrate how to seamlessly integrate statistical tests into real-world data analysis workflows.
+
+<br>
 
 #### <a name="section52">What’s Next?</a>
 
@@ -485,12 +547,15 @@ To further solidify your understanding:
 - Explore more complex statistical methods like **ANOVA** for comparing multiple groups or post-hoc tests for pairwise comparisons.
 - Dive deeper into R's data visualization capabilities to create compelling and informative plots.
 
+<center><img src="picture/ANOVA-Wordle.png" alt="Img" width="600"/></center>
+
 Remember, t-tests are a cornerstone of statistical analysis, and mastering them lays the foundation for more advanced techniques. If you have any questions or feedback about this tutorial, don’t hesitate to reach out to us.
 
 Happy coding and analyzing!
 
 
 ---
+<div style="background-color: #F0FFF0; padding: 10px; border-radius: 5px;">
 
 Check out our <a href="https://ourcodingclub.github.io/links/" target="_blank">Useful links</a> page where you can find loads of guides and cheatsheets.
 
@@ -500,10 +565,12 @@ If you have any questions about completing this tutorial, please contact us on [
 
 <ul class="social-icons">
 
-<li>
+<h3 style="font-size: 14px;">
+  <a href="https://twitter.com/our_codingclub" target="_blank">
+    Follow our coding adventures on Twitter! <i class="fa fa-twitter"></i>
+  </a>
+</h3>
 
-<h3><a href="https://twitter.com/our_codingclub" target="_blank">Follow our coding adventures on Twitter! <i class="fa fa-twitter"></i></a></h3>
+</div>
 
-</li>
-
-</ul>
+<br><br><br>
